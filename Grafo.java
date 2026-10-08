@@ -46,7 +46,11 @@ public class Grafo <V> {
 
     }
 
-    public void adicionaVertices() {
+    public void adicionaVertices(V ver) throws Exception 
+    {
+        if(ver == null) throw new Exception("Valor ausente ao vertice");
+
+        
 
     }
 }
