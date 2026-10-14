@@ -1,56 +1,63 @@
-public class Grafo <V> {
-    private V [] vertices;
-    private ListaSimplesDesordenada<V> arestas;
-    private int distancias;
+import java.util.ArrayList;
 
-    public Grafo( ListaSimplesDesordenada<V> arestas, int distancias) {
-        this.arestas= arestas;
-        this.distancias= distancias;
+public class Grafo<V> {
+    private ArrayList<Vertice<V>> vertices;
+    private ListaSimplesDesordenada<Aresta<V>> arestas;
 
-        this.vertices = (V[]) new Object[10];
+    public Grafo() {
+        this.vertices = new ArrayList<Vertice<V>>();
+        this.arestas = new ListaSimplesDesordenada<Aresta<V>>();
     }
 
-    public V[] getVertices() {
-        return vertices;
+    public void adicionarVertice(V dado) throws Exception {
+        if (dado == null) throw new Exception("Valor ausente ao vértice");
+        if (this.getVertice(dado) != null) throw new Exception("Vértice já existe");
+        this.vertices.add(new Vertice<V>(dado));
     }
 
-    public void setVertices(V[] vertices) {
-        this.vertices = vertices;
+    public void adicionarAresta(double peso, V dadoInicio, V dadoFim) throws Exception {
+        Vertice<V> inicio = this.getVertice(dadoInicio);
+        Vertice<V> fim = this.getVertice(dadoFim);
+
+        if (inicio == null || fim == null)
+            throw new Exception("Vértice inexistente");
+
+        Aresta<V> aresta = new Aresta<V>(peso, inicio, fim);
+        inicio.adicionarArestaSaida(aresta);
+        fim.adicionarArestaEntrada(aresta);
+        this.arestas.guardeUmItemNoFinal(aresta);
     }
 
-    public ListaSimplesDesordenada<V> getArestas() {
-        return arestas;
+    public Vertice<V> getVertice(V dado) {
+        for (Vertice<V> v : this.vertices)
+            if (v.getDado().equals(dado))
+                return v;
+        return null;
     }
 
-    public void setArestas(ListaSimplesDesordenada<V> arestas) {
-        this.arestas = arestas;
-    }
+    /* To string de exemplo para teste do grafo */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
 
-    public int getDistancias() {
-        return distancias;
-    }
-    
-    public void setDistancias(int distancias) {
-        this.distancias = distancias;
-    }
+        for (Vertice<V> v : this.vertices) {
+            sb.append(v.getDado()).append(" -> ");
 
-    public void removeArestas() {
+            if (v.getArestasSaida().isEmpty()) {
+                sb.append("(sem arestas)");
+            } else {
+                for (int i = 0; i < v.getArestasSaida().size(); i++) {
+                    Aresta<V> a = v.getArestasSaida().get(i);
+                    sb.append(a.getFim().getDado())
+                    .append(" (").append(a.getPeso()).append(")");
 
-    }
+                    if (i < v.getArestasSaida().size() - 1)
+                        sb.append(", ");
+                }
+            }
+            sb.append("\n");
+        }
 
-    public void removeVertices() {
-
-    }
-
-    public void adicionaArestas() {
-
-    }
-
-    public void adicionaVertices(V ver) throws Exception 
-    {
-        if(ver == null) throw new Exception("Valor ausente ao vertice");
-
-        
-
+        return sb.toString();
     }
 }
