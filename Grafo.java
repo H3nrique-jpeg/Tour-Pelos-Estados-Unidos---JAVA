@@ -1,18 +1,18 @@
 import java.util.ArrayList;
 
 public class Grafo<V> {
-    private ArrayList<Vertice<V>> vertices;
+    private ListaSimplesDesordenada<Vertice<V>> vertices;
     private ListaSimplesDesordenada<Aresta<V>> arestas;
 
     public Grafo() {
-        this.vertices = new ArrayList<Vertice<V>>();
+        this.vertices = new ListaSimplesDesordenada<Vertice<V>>();
         this.arestas = new ListaSimplesDesordenada<Aresta<V>>();
     }
 
     public void adicionarVertice(V dado) throws Exception {
         if (dado == null) throw new Exception("Valor ausente ao vértice");
         if (this.getVertice(dado) != null) throw new Exception("Vértice já existe");
-        this.vertices.add(new Vertice<V>(dado));
+        this.vertices.guardeUmItemNoFinal(new Vertice<V>(dado));
     }
 
     public void adicionarAresta(double peso, V dadoInicio, V dadoFim) throws Exception {
@@ -29,9 +29,6 @@ public class Grafo<V> {
     }
 
     public Vertice<V> getVertice(V dado) {
-        for (Vertice<V> v : this.vertices)
-            if (v.getDado().equals(dado))
-                return v;
         return null;
     }
 

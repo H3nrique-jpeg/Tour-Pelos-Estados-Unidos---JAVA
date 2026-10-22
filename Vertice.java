@@ -2,13 +2,13 @@ import java.util.ArrayList;
 
 public class Vertice<V> {
     private V dado;
-    private ArrayList<Aresta<V>> arestasEntrada;
-    private ArrayList<Aresta<V>> arestasSaida;
+    private ListaSimplesDesordenada<Aresta<V>> arestasEntrada;
+    private ListaSimplesDesordenada<Aresta<V>> arestasSaida;
 
     public Vertice(V valor) {
         this.dado = valor;
-        this.arestasEntrada = new ArrayList<Aresta<V>>();
-        this.arestasSaida = new ArrayList<Aresta<V>>();
+        this.arestasEntrada = new ListaSimplesDesordenada<Aresta<V>>();
+        this.arestasSaida = new ListaSimplesDesordenada<Aresta<V>>();
     }
 
     public V getDado() {
@@ -19,19 +19,19 @@ public class Vertice<V> {
         this.dado = dado;
     }
 
-    public ArrayList<Aresta<V>> getArestasEntrada() { return arestasEntrada; }
-    public ArrayList<Aresta<V>> getArestasSaida() { return arestasSaida; }
+    public ListaSimplesDesordenada<Aresta<V>> getArestasEntrada() { return arestasEntrada; }
+    public ListaSimplesDesordenada<Aresta<V>> getArestasSaida() { return arestasSaida; }
 
     public void adicionarArestaEntrada(Aresta<V> aresta) throws Exception {
         if(aresta == null) throw new Exception("Aresta Ausente");
 
-        this.arestasEntrada.add(aresta);
+        this.arestasEntrada.guardeUmItemNoInicio(aresta);
     }
 
     public void adicionarArestaSaida(Aresta<V> aresta) throws Exception {
         if(aresta == null) throw new Exception("Aresta Ausente!");
 
-        this.arestasSaida.add(aresta);
+        this.arestasSaida.guardeUmItemNoFinal(aresta);
         
     }
 
