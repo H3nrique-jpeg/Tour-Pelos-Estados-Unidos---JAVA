@@ -34,7 +34,4 @@ public class Vertice<V> {
         this.arestasSaida.guardeUmItemNoFinal(aresta);
         
     }
-
-
-    
 }

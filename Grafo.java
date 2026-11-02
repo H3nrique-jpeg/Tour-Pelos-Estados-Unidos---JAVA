@@ -37,22 +37,29 @@ public class Grafo<V> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        for (Vertice<V> v : this.vertices) {
-            sb.append(v.getDado()).append(" -> ");
+        try {
+            for (int i = 0; i < this.vertices.getQuantidade(); i++) {
+                Vertice<V> v = this.vertices.get(i);
+                sb.append(v.getDado()).append(" -> ");
 
-            if (v.getArestasSaida().isEmpty()) {
-                sb.append("(sem arestas)");
-            } else {
-                for (int i = 0; i < v.getArestasSaida().size(); i++) {
-                    Aresta<V> a = v.getArestasSaida().get(i);
-                    sb.append(a.getFim().getDado())
-                    .append(" (").append(a.getPeso()).append(")");
+                if (v.getArestasSaida().isVazia()) {
+                    sb.append("(sem arestas)");
+                } 
+                else {
+                    int qteArestas = v.getArestasSaida().getQuantidade();
+                    for (int j = 0; j < qteArestas; j++) {
+                        Aresta<V> a = v.getArestasSaida().get(j);
+                        sb.append(a.getFim().getDado())
+                        .append(" (").append(a.getPeso()).append(")");
 
-                    if (i < v.getArestasSaida().size() - 1)
-                        sb.append(", ");
+                        if (j < qteArestas - 1)
+                            sb.append(", ");
+                    }
                 }
+                sb.append("\n");
             }
-            sb.append("\n");
+        } catch (Exception e) {
+            sb.append("Erro ao formatar o grafo: ").append(e.getMessage());
         }
 
         return sb.toString();
