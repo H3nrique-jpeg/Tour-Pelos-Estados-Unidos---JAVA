@@ -39,7 +39,7 @@ public class Grafo<V> {
 
         try {
             for (int i = 0; i < this.vertices.getQuantidade(); i++) {
-                Vertice<V> v = this.vertices.get(i);
+                Vertice<V> v = this.vertices.getPosicao(i);
                 sb.append(v.getDado()).append(" -> ");
 
                 if (v.getArestasSaida().isVazia()) {
@@ -48,7 +48,7 @@ public class Grafo<V> {
                 else {
                     int qteArestas = v.getArestasSaida().getQuantidade();
                     for (int j = 0; j < qteArestas; j++) {
-                        Aresta<V> a = v.getArestasSaida().get(j);
+                        Aresta<V> a = v.getArestasSaida().getPosicao(j);
                         sb.append(a.getFim().getDado())
                         .append(" (").append(a.getPeso()).append(")");
 

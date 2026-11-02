@@ -168,7 +168,7 @@ public class ListaSimplesDesordenada <X>
         atual.setProx(null);
         System.gc();
     }
-    public X get(int posicao) throws Exception {
+    public X getPosicao(int posicao) throws Exception {
         if (posicao < 0 || this.primeiro == null)
             throw new Exception("Posicao invalida");
 
