@@ -51,12 +51,28 @@ public class Grafo<V> {
                     sb.append(a.getFim().getDado())
                     .append(" (").append(a.getPeso()).append(")");
 
+
                     if (i < v.getArestasSaida().size() - 1)
                         sb.append(", ");
                 }
             }
             sb.append("\n");
         }
+
+    }
+
+    public void removeVertices() {
+
+    }
+
+    public void adicionaArestas(ListaSimplesDesordenada<V> arestas) throws Exception{
+        if (arestas == null) throw new Exception("Aresta Ausente!");
+
+        
+    }
+
+    public void adicionaVertices() {
+
 
         return sb.toString();
     }
