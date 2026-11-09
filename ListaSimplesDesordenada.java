@@ -168,6 +168,23 @@ public class ListaSimplesDesordenada <X>
         atual.setProx(null);
         System.gc();
     }
+    public X getPosicao(int posicao) throws Exception {
+        if (posicao < 0 || this.primeiro == null)
+            throw new Exception("Posicao invalida");
+
+        No atual = this.primeiro;
+        for (int i = 0; i < posicao; i++) {
+            if (atual.getProx() == null)
+                throw new Exception("Posicao invalida");
+            atual = atual.getProx();
+        }
+
+        X ret = atual.getInfo();
+        if (ret instanceof Cloneable)
+            ret = meuCloneDeX(ret);
+
+        return ret;
+    }
     
     public int getQuantidade ()
     {
