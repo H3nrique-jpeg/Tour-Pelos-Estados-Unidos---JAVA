@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Vertice<V> {
-    private V dado;
+    private final V dado;
     private ListaSimplesDesordenada<Aresta<V>> arestasEntrada;
     private ListaSimplesDesordenada<Aresta<V>> arestasSaida;
 
@@ -13,10 +13,6 @@ public class Vertice<V> {
 
     public V getDado() {
         return dado;
-    }
-
-    public void setDado(V dado) {
-        this.dado = dado;
     }
 
     public ListaSimplesDesordenada<Aresta<V>> getArestasEntrada() { return arestasEntrada; }

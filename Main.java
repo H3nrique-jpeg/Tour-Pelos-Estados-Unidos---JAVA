@@ -1,34 +1,27 @@
 public class Main {
+    public static void main(String[] args) {
 
-    // adiciona a estrada nos dois sentidos (ida e volta)
-    private static void estrada(Grafo<String> g, double peso, String a, String b) throws Exception {
-        g.adicionarAresta(peso, a, b);
-        g.adicionarAresta(peso, b, a);
-    }
+        try {
+            Grafo<String> grafo = new Grafo<>();
 
-    public static void main(String[] args) throws Exception {
-        Grafo<String> grafo = new Grafo<String>();
-        grafo.adicionarVertice("Brooklyn");
-        grafo.adicionarVertice("New York");
-        grafo.adicionarVertice("Atlanta");
-        grafo.adicionarVertice("Chicago");
-        grafo.adicionarVertice("Washington");
+            grafo.adicionarVertice("Los Angeles");
+            grafo.adicionarVertice("Las Vegas");
+            grafo.adicionarVertice("Phoenix");
+            grafo.adicionarVertice("San Francisco");
 
-        // pesos aproximados (milhas); troque pelos valores do enunciado
-        estrada(grafo, 2,   "Brooklyn",   "New York");
-        estrada(grafo, 230, "Brooklyn",   "Washington");
-        estrada(grafo, 875, "Brooklyn",   "Atlanta");
-        estrada(grafo, 795, "Brooklyn",   "Chicago");
+            grafo.adicionarAresta(450, "Los Angeles", "Las Vegas");
+            grafo.adicionarAresta(470, "Las Vegas", "Los Angeles");
+            grafo.adicionarAresta(575, "Los Angeles", "Phoenix");
+            grafo.adicionarAresta(300, "Phoenix", "Las Vegas");
 
-        estrada(grafo, 225, "New York",   "Washington");
-        estrada(grafo, 870, "New York",   "Atlanta");
-        estrada(grafo, 790, "New York",   "Chicago");
+            grafo.exibir();
 
-        estrada(grafo, 640, "Washington", "Atlanta");
-        estrada(grafo, 700, "Washington", "Chicago");
+            grafo.montarMatriz();
 
-        estrada(grafo, 715, "Atlanta",    "Chicago");
+            System.out.println("Matriz criada com sucesso!");
 
-        System.out.println(grafo);
+        } catch (Exception erro) {
+            System.out.println("Erro: " + erro.getMessage());
+        }
     }
 }

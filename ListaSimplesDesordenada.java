@@ -1,4 +1,5 @@
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
 public class ListaSimplesDesordenada <X>
 {
@@ -188,29 +189,26 @@ public class ListaSimplesDesordenada <X>
     
     public int getQuantidade ()
     {
-        // faça
-        No atual = this.primeiro;
-        int quantidade = 0; 
-        while (atual.getProx()!=null) 
-        {
-            quantidade++;
-            atual = atual.getProx();
-        }
-        return quantidade;
+        int quantidade = 0;
 
+        for (No atual = this.primeiro; atual != null; atual = atual.getProx())
+            quantidade++;
+
+        return quantidade;
     }
+
 
     public boolean tem (X i) throws Exception
     {
-        // faça
-        No atual = this.primeiro;
-        while (atual.getProx()!=null)
-        {
-            atual = atual.getProx();
-            if (i.equals(atual.getInfo())) return true;
-        }
+        if (i == null)
+            throw new Exception ("Informação ausente");
+
+        for (No atual = this.primeiro; atual != null; atual = atual.getProx())
+            if (i.equals(atual.getInfo()))
+                return true;
+
         return false;
-	}
+    }
 	
 	public void removaItemIndicado (X i) throws Exception
 	{
