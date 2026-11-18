@@ -30,4 +30,18 @@ public class Vertice<V> {
         this.arestasSaida.guardeUmItemNoFinal(aresta);
         
     }
+
+    public void removerArestaEntrada(Aresta<V> aresta) throws Exception {
+        if (aresta == null)
+            throw new Exception("Aresta ausente!");
+
+        this.arestasEntrada.removaItemIndicado(aresta);
+    }
+
+    public void removerArestaSaida(Aresta<V> aresta) throws Exception {
+        if (aresta == null)
+            throw new Exception("Aresta ausente!");
+
+        this.arestasSaida.removaItemIndicado(aresta);
+    }
 }

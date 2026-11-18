@@ -12,4 +12,16 @@ public class Aresta<V> {
     public double getPeso() { return peso; }
     public Vertice<V> getInicio() { return inicio; }
     public Vertice<V> getFim() { return fim; }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+
+    public void setInicio(Vertice<V> inicio) {
+        this.inicio = inicio;
+    }
+
+    public void setFim(Vertice<V> fim) {
+        this.fim = fim;
+    }
 }

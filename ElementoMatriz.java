@@ -13,6 +13,18 @@ public class ElementoMatriz<V> {
     public int getLinha() { return linha; }
     public int getColuna() { return coluna; }
     public double getDistancia() { return distancia; }
+
+    public void setLinha(int linha) {
+        this.linha = linha;
+    }
+
+    public void setColuna(int coluna) {
+        this.coluna = coluna;
+    }
+
+    public void setDistancia(double distancia) {
+        this.distancia = distancia;
+    }
 }
 
 /* esta classe dterminará as info do nó:

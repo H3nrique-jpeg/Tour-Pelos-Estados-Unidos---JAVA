@@ -4,13 +4,17 @@ public class MatrizEsparsa<V> {
     private ArrayList<Vertice<V>> vertices;
     private ListaSimplesDesordenada<ElementoMatriz<V>> elementos;
 
-    public MatrizEsparsa(ArrayList<Vertice<V>> verticesDoGrafo) throws Exception {
-        if (verticesDoGrafo == null) {
-            throw new Exception("Lista de vértices ausente!");
-        }
-
+    public MatrizEsparsa(ArrayList<Vertice<V>> verticesDoGrafo)  {
         this.vertices = new ArrayList<Vertice<V>>(verticesDoGrafo);
         this.elementos = new ListaSimplesDesordenada<>();
+    }
+
+    public void adicionarVertice(Vertice<V> vertice) throws Exception {
+        if(vertice == null) throw new Exception("Vertice Ausente!");
+
+        if(this.vertices.contains(vertice)) throw new Exception("Vertice já cadastrado!");
+
+        this.vertices.add(vertice);
     }
 
     private int localizarIndice(V dado) throws Exception {      // Fazer a procura das cidades pelo índice
@@ -25,6 +29,34 @@ public class MatrizEsparsa<V> {
         }
 
         throw new Exception("Vértice inexistente!");
+    }
+
+    public void removerVertice(Vertice<V> vertice) throws Exception {
+        if (vertice == null) throw new Exception("Vertice Ausente!");
+
+        int indiceRemover = this.localizarIndice(vertice.getDado());
+        
+
+        for(int i = 0; i < this.elementos.getQuantidade(); ) {
+            ElementoMatriz<V> elemento = this.elementos.getPosicao(i);
+
+            if(elemento.getLinha() == indiceRemover || elemento.getColuna() == indiceRemover) {
+                this.elementos.removaItemIndicado(i);
+            } else {
+                if(elemento.getLinha() > indiceRemover) {
+                    elemento.setLinha(elemento.getLinha() - 1);
+                }
+                if(elemento.getColuna() > indiceRemover) {
+                    elemento.setColuna(elemento.getColuna() - 1);
+                }
+
+                i++;
+            }
+            
+        }
+
+        this.vertices.remove(indiceRemover);
+
     }
 
     private boolean existeElemento(int linha, int coluna) throws Exception {     // Compara os caminhos, ex: Los Angeles -> Las Vegas = 450; Las Vegas -> Los Angeles = 470
