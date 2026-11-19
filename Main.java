@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 
 public class Main {
@@ -8,36 +9,64 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            carregarDadosIniciais();
-        } catch (Exception erro) {
-            System.out.println("Erro ao carregar dados iniciais: " + erro.getMessage());
+            carregarDados();
+            System.out.println("Mapa dos Estados Unidos carregado!");
+            System.out.println("Cidades: " + grafo.getVertices().size());
+
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar mapa: " + e.getMessage());
+            return;
         }
 
         int opcao;
 
         do {
-            opcao = -1; // se a leitura falhar, NÃO pode virar 0 (sair)
             exibirMenu();
 
             try {
                 opcao = lerInteiro("Escolha uma opção: ");
 
                 switch (opcao) {
-                    case 1: cadastrarVertice(); break;
-                    case 2: cadastrarAresta(); break;
-                    case 3: grafo.exibir(); break;
-                    case 4: removerVertice(); break;
-                    case 5: exibirMatriz(); break;
-                    case 6: consultarCidade(); break;
-                    case 7: System.out.println("\n" + grafo); break;
-                    case 8: executarTestesAutomaticos(); break;
-                    case 0: System.out.println("\nEncerrando sistema..."); break;
-                    default: System.out.println("\nOpção inválida!");
+
+                    case 1:
+                        grafo.exibir();
+                        break;
+
+                    case 2:
+                        exibirMatriz();
+                        break;
+
+                    case 3:
+                        cadastrarCidade();
+                        break;
+
+                    case 4:
+                        cadastrarEstrada();
+                        break;
+
+                    case 5:
+                        removerCidade();
+                        break;
+
+                    case 6:
+                        calcularMenorRota();
+                        break;
+
+                    case 7:
+                        consultarCidade();
+                        break;
+
+                    case 0:
+                        System.out.println("Encerrando sistema...");
+                        break;
+
+                    default:
+                        System.out.println("Opção inválida!");
                 }
 
-            } catch (Exception erro) {
-                // um erro numa opção NÃO derruba mais o programa
-                System.out.println("\nErro: " + erro.getMessage());
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
+                opcao = -1;
             }
 
         } while (opcao != 0);
@@ -46,115 +75,324 @@ public class Main {
     }
 
     // =====================================
+    // CARREGAR MAPA
+    // =====================================
+
+    
+private static void carregarDados() throws Exception {
+
+    // =================================
+    // CIDADES
+    // =================================
+
+    String[] cidades = {
+        "Seattle", "Portland", "Boise", "Yellowstone",
+        "Minneapolis", "Milwaukee", "Chicago", "Detroit",
+        "Albany", "Boston", "New York", "Washington",
+        "Richmond", "San Francisco", "Lake Tahoe",
+        "Salt Lake City", "Las Vegas", "Grand Canyon",
+        "Palm Springs", "Los Angeles", "San Diego",
+        "Phoenix", "Denver", "Vail", "Aspen",
+        "Colorado Springs", "Omaha", "Kansas City",
+        "St Louis", "Indianapolis", "Nashville", "Memphis",
+        "Little Rock", "Dallas", "San Antonio", "Houston",
+        "New Orleans", "Atlanta", "Orlando",
+        "Fort Lauderdale", "Miami"
+    };
+
+    for (String cidade : cidades) {
+        grafo.adicionarVertice(cidade);
+    }
+
+    // =================================
+    // NOROESTE
+    // =================================
+
+    estrada(170, "Seattle", "Portland");
+    estrada(500, "Seattle", "Boise");
+    estrada(720, "Portland", "Boise");
+    estrada(640, "Portland", "San Francisco");
+    estrada(580, "Portland", "Lake Tahoe");
+    estrada(300, "San Francisco", "Lake Tahoe");
+    estrada(420, "Boise", "Lake Tahoe");
+    estrada(670, "Boise", "Yellowstone");
+    estrada(1340, "Yellowstone", "Minneapolis");
+    estrada(930, "Yellowstone", "Denver");
+
+    // =================================
+    // CALIFÓRNIA E SUDOESTE
+    // =================================
+
+    estrada(380, "San Francisco", "Los Angeles");
+    estrada(780, "Lake Tahoe", "Palm Springs");
+    estrada(520, "Lake Tahoe", "Salt Lake City");
+    estrada(420, "Salt Lake City", "Las Vegas");
+    estrada(530, "Salt Lake City", "Denver");
+    estrada(660, "Salt Lake City", "Phoenix");
+
+    estrada(270, "Los Angeles", "Las Vegas");
+    estrada(160, "Los Angeles", "Palm Springs");
+    estrada(120, "Los Angeles", "San Diego");
+    estrada(140, "San Diego", "Palm Springs");
+    estrada(250, "San Diego", "Phoenix");
+
+    estrada(290, "Palm Springs", "Las Vegas");
+    estrada(440, "Palm Springs", "Grand Canyon");
+    estrada(470, "Las Vegas", "Grand Canyon");
+    estrada(560, "Grand Canyon", "Phoenix");
+
+    // =================================
+    // COLORADO
+    // =================================
+
+    estrada(80, "Denver", "Vail");
+    estrada(160, "Vail", "Aspen");
+    estrada(180, "Aspen", "Colorado Springs");
+    estrada(120, "Denver", "Colorado Springs");
+
+    // =================================
+    // REGIÃO CENTRAL
+    // =================================
+
+    estrada(380, "Minneapolis", "Omaha");
+    estrada(340, "Minneapolis", "Milwaukee");
+    estrada(410, "Minneapolis", "Chicago");
+    estrada(90, "Milwaukee", "Chicago");
+    estrada(470, "Omaha", "Chicago");
+    estrada(540, "Omaha", "Denver");
+    estrada(190, "Omaha", "Kansas City");
+
+    estrada(280, "Chicago", "Detroit");
+    estrada(300, "Chicago", "St Louis");
+    estrada(180, "Chicago", "Indianapolis");
+    estrada(700, "Chicago", "Washington");
+
+    estrada(250, "Kansas City", "St Louis");
+    estrada(550, "Kansas City", "Dallas");
+
+    estrada(250, "St Louis", "Indianapolis");
+    estrada(400, "St Louis", "Dallas");
+    estrada(290, "St Louis", "Little Rock");
+
+    // =================================
+    // NORDESTE
+    // =================================
+
+    estrada(650, "Detroit", "Albany");
+    estrada(640, "Detroit", "New York");
+    estrada(530, "Detroit", "Washington");
+
+    estrada(170, "Albany", "Boston");
+    estrada(150, "Albany", "New York");
+    estrada(210, "Boston", "New York");
+    estrada(240, "New York", "Washington");
+    estrada(200, "Washington", "Richmond");
+    estrada(590, "Indianapolis", "Washington");
+
+    // =================================
+    // SUL
+    // =================================
+
+    estrada(290, "Indianapolis", "Nashville");
+    estrada(210, "Memphis", "Nashville");
+    estrada(240, "Nashville", "Atlanta");
+    estrada(710, "Nashville", "Richmond");
+    estrada(560, "Atlanta", "Richmond");
+
+    estrada(140, "Little Rock", "Memphis");
+    estrada(390, "Memphis", "Atlanta");
+    estrada(320, "Little Rock", "Dallas");
+    estrada(390, "Little Rock", "Atlanta");
+
+    // =================================
+    // TEXAS
+    // =================================
+
+    estrada(730, "Denver", "Dallas");
+    estrada(1070, "Phoenix", "Dallas");
+    estrada(990, "Phoenix", "San Antonio");
+    estrada(280, "Dallas", "San Antonio");
+    estrada(250, "Dallas", "Houston");
+    estrada(310, "San Antonio", "Houston");
+
+    // =================================
+    // GOLFO DO MÉXICO E FLÓRIDA
+    // =================================
+
+    estrada(530, "Houston", "New Orleans");
+    estrada(470, "New Orleans", "Atlanta");
+    estrada(790, "Dallas", "Atlanta");
+    estrada(640, "New Orleans", "Orlando");
+    estrada(860, "New Orleans", "Miami");
+    estrada(440, "Atlanta", "Orlando");
+    estrada(230, "Orlando", "Miami");
+    estrada(50, "Fort Lauderdale", "Miami");
+    estrada(180, "Orlando", "Fort Lauderdale");
+    
+    System.out.println("Mapa carregado com sucesso!");
+}
+
+
+    // =====================================
+    // CADASTRAR ESTRADA BIDIRECIONAL
+    // =====================================
+
+    private static void estrada(
+        double distancia,
+        String origem,
+        String destino
+    ) throws Exception {
+
+        grafo.adicionarAresta(distancia, origem, destino);
+        grafo.adicionarAresta(distancia, destino, origem);
+    }
+
+    // =====================================
     // MENU
     // =====================================
 
     private static void exibirMenu() {
-        System.out.println("\n============================================");
+
+        System.out.println("\n======================================");
         System.out.println("       TOUR PELOS ESTADOS UNIDOS");
-        System.out.println("============================================");
-        System.out.println("1 - Adicionar cidade");
-        System.out.println("2 - Adicionar rota");
-        System.out.println("3 - Exibir grafo");
-        System.out.println("4 - Remover cidade");
-        System.out.println("5 - Exibir matriz esparsa");
-        System.out.println("6 - Consultar cidade (rotas de entrada e saída)");
-        System.out.println("7 - Exibir grafo (toString)");
-        System.out.println("8 - Rodar testes automáticos");
+        System.out.println("======================================");
+        System.out.println("1 - Exibir grafo");
+        System.out.println("2 - Exibir matriz esparsa");
+        System.out.println("3 - Adicionar cidade");
+        System.out.println("4 - Adicionar estrada");
+        System.out.println("5 - Remover cidade");
+        System.out.println("6 - Calcular menor rota");
+        System.out.println("7 - Consultar cidade");
         System.out.println("0 - Sair");
-        System.out.println("============================================");
+        System.out.println("======================================");
     }
 
     // =====================================
-    // LEITURA SEGURA (não quebra com texto no lugar de número)
+    // LEITURA
     // =====================================
 
     private static int lerInteiro(String mensagem) throws Exception {
+
         System.out.print(mensagem);
-        String texto = entrada.nextLine().trim();
 
         try {
-            return Integer.parseInt(texto);
+            return Integer.parseInt(entrada.nextLine().trim());
         } catch (NumberFormatException e) {
-            throw new Exception("Digite um número inteiro válido.");
+            throw new Exception("Digite um número inteiro válido!");
         }
     }
 
     private static double lerDecimal(String mensagem) throws Exception {
+
         System.out.print(mensagem);
-        String texto = entrada.nextLine().trim().replace(',', '.');
 
         try {
-            return Double.parseDouble(texto);
+            return Double.parseDouble(
+                entrada.nextLine().trim().replace(',', '.')
+            );
         } catch (NumberFormatException e) {
-            throw new Exception("Digite um número válido (ex: 450 ou 450.5).");
+            throw new Exception("Digite um número válido!");
         }
     }
 
     private static String lerTexto(String mensagem) {
+
         System.out.print(mensagem);
         return entrada.nextLine().trim();
     }
 
     // =====================================
-    // DADOS INICIAIS
+    // OPERAÇÕES
     // =====================================
-
-    private static void carregarDadosIniciais() throws Exception {
-
-        grafo.adicionarVertice("Los Angeles");
-        grafo.adicionarVertice("Las Vegas");
-        grafo.adicionarVertice("Phoenix");
-        grafo.adicionarVertice("San Francisco");
-
-        grafo.adicionarAresta(450, "Los Angeles", "Las Vegas");
-        grafo.adicionarAresta(470, "Las Vegas", "Los Angeles");
-        grafo.adicionarAresta(575, "Los Angeles", "Phoenix");
-        grafo.adicionarAresta(300, "Phoenix", "Las Vegas");
-
-        System.out.println("Dados iniciais carregados!");
-    }
-
-    // =====================================
-    // OPÇÕES DO MENU
-    // =====================================
-
-    private static void cadastrarVertice() throws Exception {
-        String cidade = lerTexto("\nNome da cidade: ");
-
-        if (cidade.isEmpty())
-            throw new Exception("O nome da cidade não pode ser vazio.");
-
-        grafo.adicionarVertice(cidade);
-        System.out.println("Cidade adicionada com sucesso!");
-    }
-
-    private static void cadastrarAresta() throws Exception {
-        String origem  = lerTexto("\nCidade de origem: ");
-        String destino = lerTexto("Cidade de destino: ");
-        double peso    = lerDecimal("Distância (km): ");
-
-        grafo.adicionarAresta(peso, origem, destino);
-        System.out.println("Rota adicionada com sucesso!");
-    }
-
-    private static void removerVertice() throws Exception {
-        String cidade = lerTexto("\nCidade que deseja remover: ");
-
-        grafo.removerVertice(cidade);
-        System.out.println("Cidade removida com sucesso!");
-        System.out.println("Suas arestas relacionadas também foram removidas.");
-    }
 
     private static void exibirMatriz() throws Exception {
+
         grafo.montarMatriz();
 
-        System.out.println("\nMatriz esparsa atualizada!");
+        System.out.println("\nMATRIZ ESPARSA");
         System.out.println(grafo.getMatriz());
     }
 
+    private static void cadastrarCidade() throws Exception {
+
+        String cidade = lerTexto("Nome da cidade: ");
+
+        grafo.adicionarVertice(cidade);
+
+        System.out.println("Cidade adicionada!");
+    }
+
+    private static void cadastrarEstrada() throws Exception {
+
+        String origem = lerTexto("Origem: ");
+        String destino = lerTexto("Destino: ");
+        double distancia = lerDecimal("Distância: ");
+
+        estrada(distancia, origem, destino);
+
+        System.out.println("Estrada bidirecional cadastrada!");
+    }
+
+    private static void removerCidade() throws Exception {
+
+        String cidade = lerTexto("Cidade para remover: ");
+
+        grafo.removerVertice(cidade);
+
+        System.out.println("Cidade removida!");
+    }
+
+    // =====================================
+    // MENOR CAMINHO
+    // =====================================
+
+    private static void calcularMenorRota() throws Exception {
+
+        String origem = lerTexto("Cidade de origem: ");
+        String destino = lerTexto("Cidade de destino: ");
+
+        Percurso<String> percurso =
+            grafo.menorCaminho(origem, destino);
+
+        System.out.println("\n======================================");
+        System.out.println("             MENOR ROTA");
+        System.out.println("======================================");
+
+        for (int i = 0; i < percurso.cidades.size(); i++) {
+
+            System.out.print(
+                percurso.cidades.get(i).getDado()
+            );
+
+            if (i < percurso.trechos.size()) {
+
+                System.out.printf(
+                    " --(%.1f km)--> ",
+                    percurso.trechos.get(i)
+                );
+            }
+        }
+
+        System.out.println("\n--------------------------------------");
+
+        System.out.printf(
+            "Distância total: %.2f km%n",
+            percurso.total
+        );
+
+        System.out.println("Quantidade de cidades: " +
+            percurso.cidades.size());
+
+        System.out.println("======================================");
+    }
+
+    // =====================================
+    // CONSULTAR CIDADE
+    // =====================================
+
     private static void consultarCidade() throws Exception {
-        String cidade = lerTexto("\nCidade a consultar: ");
+
+        String cidade = lerTexto("Cidade: ");
 
         Vertice<String> v = grafo.getVertice(cidade);
 
@@ -163,135 +401,28 @@ public class Main {
 
         System.out.println("\n[" + v.getDado() + "]");
 
-        System.out.println("  Saem daqui (" + v.getArestasSaida().getQuantidade() + "):");
+        System.out.println("\nEstradas de saída:");
+
         for (int i = 0; i < v.getArestasSaida().getQuantidade(); i++) {
+
             Aresta<String> a = v.getArestasSaida().getPosicao(i);
-            System.out.println("    -> " + a.getFim().getDado() + " (" + a.getPeso() + " km)");
+
+            System.out.println(
+                a.getFim().getDado() + " - " +
+                a.getPeso() + " km"
+            );
         }
 
-        System.out.println("  Chegam aqui (" + v.getArestasEntrada().getQuantidade() + "):");
+        System.out.println("\nEstradas de entrada:");
+
         for (int i = 0; i < v.getArestasEntrada().getQuantidade(); i++) {
+
             Aresta<String> a = v.getArestasEntrada().getPosicao(i);
-            System.out.println("    <- " + a.getInicio().getDado() + " (" + a.getPeso() + " km)");
+
+            System.out.println(
+                a.getInicio().getDado() + " - " +
+                a.getPeso() + " km"
+            );
         }
-    }
-
-    // =====================================
-    // TESTES AUTOMÁTICOS
-    // (usam um grafo novo; NÃO mexem nos dados do menu)
-    // =====================================
-
-    private interface Acao {
-        void executar() throws Exception;
-    }
-
-    private static int aprovados;
-    private static int reprovados;
-
-    private static void verifica(String nome, boolean condicao) {
-        if (condicao) {
-            aprovados++;
-            System.out.println("  [OK]    " + nome);
-        } else {
-            reprovados++;
-            System.out.println("  [FALHA] " + nome);
-        }
-    }
-
-    /** Passa se a ação LANÇAR exceção. */
-    private static void esperaErro(String nome, Acao acao) {
-        try {
-            acao.executar();
-            verifica(nome + " (deveria lançar erro e não lançou)", false);
-        } catch (Exception e) {
-            verifica(nome, true);
-        }
-    }
-
-    /** Passa se a ação NÃO lançar exceção. */
-    private static void esperaSucesso(String nome, Acao acao) {
-        try {
-            acao.executar();
-            verifica(nome, true);
-        } catch (Exception e) {
-            verifica(nome + " (lançou: " + e.getMessage() + ")", false);
-        }
-    }
-
-    private static void executarTestesAutomaticos() {
-        aprovados = 0;
-        reprovados = 0;
-
-        System.out.println("\n--- TESTES AUTOMÁTICOS ---");
-
-        final Grafo<String> g = new Grafo<>();
-
-        System.out.println("\nVértices:");
-        esperaSucesso("adicionar cidade válida", () -> g.adicionarVertice("A"));
-        esperaSucesso("adicionar segunda cidade", () -> g.adicionarVertice("B"));
-        esperaSucesso("adicionar terceira cidade", () -> g.adicionarVertice("C"));
-        esperaErro("rejeitar cidade repetida", () -> g.adicionarVertice("A"));
-        esperaErro("rejeitar cidade null", () -> g.adicionarVertice(null));
-        verifica("getVertice encontra cidade existente", g.getVertice("B") != null);
-        verifica("getVertice devolve null para inexistente", g.getVertice("Z") == null);
-
-        System.out.println("\nArestas:");
-        esperaSucesso("adicionar rota A -> B", () -> g.adicionarAresta(10, "A", "B"));
-        esperaSucesso("adicionar rota B -> A (sentido oposto)", () -> g.adicionarAresta(12, "B", "A"));
-        esperaSucesso("adicionar rota B -> C", () -> g.adicionarAresta(5, "B", "C"));
-        esperaErro("rejeitar rota com cidade inexistente", () -> g.adicionarAresta(1, "A", "Z"));
-        esperaErro("rejeitar peso negativo", () -> g.adicionarAresta(-1, "A", "C"));
-        esperaErro("rejeitar peso NaN", () -> g.adicionarAresta(Double.NaN, "A", "C"));
-        verifica("A tem 1 saída", g.getVertice("A").getArestasSaida().getQuantidade() == 1);
-        verifica("B tem 2 saídas", g.getVertice("B").getArestasSaida().getQuantidade() == 2);
-        verifica("B tem 1 entrada", g.getVertice("B").getArestasEntrada().getQuantidade() == 1);
-        verifica("C tem 1 entrada", g.getVertice("C").getArestasEntrada().getQuantidade() == 1);
-
-        System.out.println("\nRota duplicada (provável falha: Grafo não valida):");
-        esperaErro("rejeitar rota A -> B repetida", () -> g.adicionarAresta(99, "A", "B"));
-
-        System.out.println("\nMatriz esparsa:");
-        final Grafo<String> g2 = new Grafo<>();
-        esperaSucesso("montar matriz de grafo vazio", () -> g2.montarMatriz());
-        esperaSucesso("montar matriz com 3 cidades e 3 rotas", () -> {
-            Grafo<String> h = new Grafo<>();
-            h.adicionarVertice("A");
-            h.adicionarVertice("B");
-            h.adicionarVertice("C");
-            h.adicionarAresta(10, "A", "B");
-            h.adicionarAresta(12, "B", "A");
-            h.adicionarAresta(5, "B", "C");
-            h.montarMatriz();
-        });
-
-        System.out.println("\nRemoção:");
-        esperaSucesso("remover cidade B", () -> g.removerVertice("B"));
-        verifica("B não existe mais", g.getVertice("B") == null);
-        verifica("A ficou sem saídas (rota A->B sumiu)", g.getVertice("A").getArestasSaida().getQuantidade() == 0);
-        verifica("A ficou sem entradas (rota B->A sumiu)", g.getVertice("A").getArestasEntrada().getQuantidade() == 0);
-        verifica("C ficou sem entradas (rota B->C sumiu)", g.getVertice("C").getArestasEntrada().getQuantidade() == 0);
-        esperaErro("rejeitar remover cidade inexistente", () -> g.removerVertice("B"));
-        esperaErro("rejeitar remover cidade null", () -> g.removerVertice(null));
-        esperaSucesso("matriz continua montando depois da remoção", () -> g.montarMatriz());
-
-        System.out.println("\nListas (removeVertices / adicionaArestas):");
-        esperaSucesso("adicionaArestas com lista", () -> {
-            Grafo<String> h = new Grafo<>();
-            h.adicionarVertice("X");
-            h.adicionarVertice("Y");
-
-            ListaSimplesDesordenada<Aresta<String>> lista = new ListaSimplesDesordenada<>();
-            lista.guardeUmItemNoFinal(new Aresta<String>(7, h.getVertice("X"), h.getVertice("Y")));
-
-            h.adicionaArestas(lista);
-
-            if (h.getVertice("X").getArestasSaida().getQuantidade() != 1)
-                throw new Exception("aresta não foi adicionada");
-        });
-        esperaErro("adicionaArestas com lista null", () -> g.adicionaArestas(null));
-        esperaErro("removeVertices com lista null", () -> g.removeVertices(null));
-
-        System.out.println("\n--------------------------------");
-        System.out.println("Resultado: " + aprovados + " OK, " + reprovados + " com falha.");
     }
 }

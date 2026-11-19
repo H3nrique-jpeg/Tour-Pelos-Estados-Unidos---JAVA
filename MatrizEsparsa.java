@@ -108,4 +108,19 @@ public class MatrizEsparsa<V> {
         ElementoMatriz<V> novo = new ElementoMatriz<>(linha, coluna, distancia);
         this.elementos.guardeUmItemNoFinal(novo);
     }
+
+    @Override 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            for (int i = 0; i < elementos.getQuantidade(); i++) {
+                ElementoMatriz<V> e = elementos.getPosicao(i);
+                sb.append(vertices.get(e.getLinha()).getDado()).append(" -> ")
+                .append(vertices.get(e.getColuna()).getDado()).append(" = ")
+                .append(e.getDistancia()).append("\n");
+            }
+        } catch (Exception ex) { sb.append("Erro: ").append(ex.getMessage()); }
+        return sb.toString();
+    }
 }
+

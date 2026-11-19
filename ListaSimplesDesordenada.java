@@ -258,16 +258,12 @@ public class ListaSimplesDesordenada <X>
 			return;
 		}
 		
-        No atual;
-        int posAtual;
-        for (atual=this.primeiro, posAtual=0;
-             atual.getProx().getProx()!=null && posAtual!=posicao-1;
-             atual=atual.getProx(),posAtual++)
-             /*comando vazio*/;
-             
-        if (posAtual!=posicao-1)
-            throw new Exception ("Posicao invalida");
-            
+        No atual = this.primeiro;
+        for (int i = 0; i < posicao - 1; i++) {
+            atual = atual.getProx();
+            if (atual == null) throw new Exception("Posicao invalida");
+        }
+        if (atual.getProx() == null) throw new Exception("Posicao invalida");
         atual.setProx(atual.getProx().getProx());
 	}
 

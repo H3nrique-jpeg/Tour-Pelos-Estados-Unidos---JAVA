@@ -10,7 +10,7 @@ public class Grafo<V> {
     public Grafo() {
         this.vertices = new ArrayList<Vertice<V>>();
         this.arestas = new ListaSimplesDesordenada<Aresta<V>>();
-            this.matriz = new MatrizEsparsa<V>(this.vertices);
+        this.matriz = new MatrizEsparsa<V>(this.vertices);
     }
 
     public void adicionarVertice(V dado) throws Exception {
@@ -27,6 +27,13 @@ public class Grafo<V> {
         this.matriz.adicionarVertice(novo);
     }
 
+    public ArrayList<Vertice<V>> getVertices() {
+        return new ArrayList<>(this.vertices);
+    }
+
+    public Percurso<V> menorCaminho(V origem, V destino) throws Exception {
+        return new Percurso<V>().menorCaminho(this.vertices, origem, destino);
+    }
 
     public void removerVertice(V vertice) throws Exception {
 
@@ -38,22 +45,16 @@ public class Grafo<V> {
         if (verticeRemover == null)
             throw new Exception("Vértice inexistente!");
 
-
         for (int i = 0; i < this.arestas.getQuantidade();) {
 
             Aresta<V> aresta = this.arestas.getPosicao(i);
 
-          
             if (aresta.getInicio() == verticeRemover ||
                 aresta.getFim() == verticeRemover) {
 
-        
                 aresta.getInicio().removerArestaSaida(aresta);
-
-                
                 aresta.getFim().removerArestaEntrada(aresta);
 
-               
                 this.arestas.removaItemIndicado(i);
 
             } else {
@@ -61,17 +62,13 @@ public class Grafo<V> {
             }
         }
 
-        
         this.matriz.removerVertice(verticeRemover);
         this.vertices.remove(verticeRemover);
     }
 
+    public void adicionarAresta(double peso, V dadoInicio, V dadoFim) throws Exception {
 
-
-    public void adicionarAresta(double peso, V dadoInicio, V dadoFim)
-            throws Exception {
-
-        if (peso < 0 || Double.isNaN(peso))
+        if (peso < 0 || Double.isNaN(peso) || Double.isInfinite(peso))
             throw new Exception("Peso inválido!");
 
         Vertice<V> inicio = this.getVertice(dadoInicio);
@@ -79,6 +76,16 @@ public class Grafo<V> {
 
         if (inicio == null || fim == null)
             throw new Exception("Vértice inexistente");
+
+        ListaSimplesDesordenada<Aresta<V>> saidas = inicio.getArestasSaida();
+
+        for (int i = 0; i < saidas.getQuantidade(); i++) {
+
+            Aresta<V> a = saidas.getPosicao(i);
+
+            if (a.getFim() == fim)
+                throw new Exception("Estrada já cadastrada!");
+        }
 
         Aresta<V> aresta = new Aresta<V>(peso, inicio, fim);
 
@@ -88,15 +95,12 @@ public class Grafo<V> {
         this.arestas.guardeUmItemNoFinal(aresta);
     }
 
- 
-
     public Vertice<V> getVertice(V dado) {
 
         if (dado == null)
             return null;
 
         for (Vertice<V> v : this.vertices) {
-
             if (v.getDado().equals(dado))
                 return v;
         }
@@ -104,12 +108,12 @@ public class Grafo<V> {
         return null;
     }
 
-
-
     public void montarMatriz() throws Exception {
+
         this.matriz = new MatrizEsparsa<V>(this.vertices);
 
         for (int i = 0; i < this.arestas.getQuantidade(); i++) {
+
             Aresta<V> aresta = this.arestas.getPosicao(i);
 
             this.matriz.adicionarElemento(
@@ -120,13 +124,9 @@ public class Grafo<V> {
         }
     }
 
-    
-
     public MatrizEsparsa<V> getMatriz() {
         return this.matriz;
     }
-
-
 
     public void exibir() {
 
@@ -187,7 +187,6 @@ public class Grafo<V> {
         System.out.println(linha);
     }
 
- 
     @Override
     public String toString() {
 
@@ -217,9 +216,8 @@ public class Grafo<V> {
                           .append(a.getPeso())
                           .append(")");
 
-                        if (i < saidas.getQuantidade() - 1) {
+                        if (i < saidas.getQuantidade() - 1)
                             sb.append(", ");
-                        }
                     }
                 }
 
@@ -234,7 +232,6 @@ public class Grafo<V> {
 
         return sb.toString();
     }
-
 
     public void removeVertices(
         ListaSimplesDesordenada<Vertice<V>> verticesRemover) throws Exception {
@@ -273,5 +270,4 @@ public class Grafo<V> {
             );
         }
     }
-
 }
