@@ -31,6 +31,14 @@ public class MatrizEsparsa<V> {
         throw new Exception("Vértice inexistente!");
     }
     
+    public double getDistancia(V origem, V destino) throws Exception {
+        int l = localizarIndice(origem), c = localizarIndice(destino);
+        for (int i = 0; i < elementos.getQuantidade(); i++) {
+            ElementoMatriz<V> e = elementos.getPosicao(i);
+            if (e.getLinha() == l && e.getColuna() == c) return e.getDistancia();
+        }
+        return Double.POSITIVE_INFINITY; // sem estrada direta
+    }
 
     public void removerVertice(Vertice<V> vertice) throws Exception {
         if (vertice == null) throw new Exception("Vertice Ausente!");
@@ -69,6 +77,21 @@ public class MatrizEsparsa<V> {
             }
         }
         return false;
+    }
+    private void tsp(int atual, boolean[] usada, int visitadas, double parcial, ArrayList<Integer> caminho, double[][] d, ArrayList<Percurso<V>> top3) {
+        int n = d.length;
+        if (top3.size() == 3 && parcial >= top3.get(2).total) return; // poda
+        if (visitadas == n) {
+            double total = parcial + d[atual][0]; // volta à cidade inicial
+            // montar Percurso com 'caminho' + cidade 0, inserir ordenado em top3, manter só 3
+            return;
+        }
+        for (int i = 1; i < n; i++) {
+            if (usada[i]) continue;
+            usada[i] = true; caminho.add(i);
+            tsp(i, usada, visitadas + 1, parcial + d[atual][i], caminho, d, top3);
+            caminho.remove(caminho.size() - 1); usada[i] = false;
+        }
     }
 
     public void adicionarElemento(V origem, V destino, double distancia) throws Exception {
