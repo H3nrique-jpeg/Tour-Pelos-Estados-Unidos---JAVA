@@ -30,6 +30,7 @@ public class MatrizEsparsa<V> {
 
         throw new Exception("Vértice inexistente!");
     }
+    
 
     public void removerVertice(Vertice<V> vertice) throws Exception {
         if (vertice == null) throw new Exception("Vertice Ausente!");
