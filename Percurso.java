@@ -7,6 +7,7 @@ public class Percurso<V> {
     public ArrayList<Vertice<V>> cidades = new ArrayList<>();
     public double total;
 
+
     private Vertice<V> buscarVertice(List<Vertice<V>> vertices, V dado) {
         for (Vertice<V> v : vertices) {
             if (v.getDado().equals(dado)) {
